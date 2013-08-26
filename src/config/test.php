@@ -2,6 +2,7 @@
 
 return array(
 
-	'name' => 'Pongo Core'
+	'name' => 'Pongo Core',
+	'package' => 'CMS'
 
 );

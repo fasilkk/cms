@@ -18,7 +18,11 @@ class PongoServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		$this->package('pongocms/cms');
+		$this->package('pongo/cms');
+
+		require __DIR__.'/../../helpers.php';
+		require __DIR__.'/../../routes.php';
+		require __DIR__.'/../../filters.php';
 	}
 
 	/**
