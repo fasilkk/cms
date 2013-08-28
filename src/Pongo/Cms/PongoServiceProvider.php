@@ -1,8 +1,8 @@
 <?php namespace Pongo\Cms;
 
+use Config;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Foundation\AliasLoader as AliasLoader;
-use Config;
 
 class PongoServiceProvider extends ServiceProvider {
 
@@ -47,12 +47,10 @@ class PongoServiceProvider extends ServiceProvider {
 	 * @return void
 	 */
 	public function register()
-	{
-		
+	{		
 		// Run accessor methods
 		$this->activateFacades();
 		$this->bindRepositories();
-
 	}
 
 	/**
@@ -71,8 +69,7 @@ class PongoServiceProvider extends ServiceProvider {
 	 * @return void
 	 */
 	protected function bindRepositories()
-	{
-		
+	{		
 		$app = $this->app;
 
 		// User Repository Interface
@@ -85,7 +82,6 @@ class PongoServiceProvider extends ServiceProvider {
 		$app->bind('Pongo', function() {
 			return new \Pongo\Cms\Classes\Pongo;
 		});
-
 	}
 
 	/**
@@ -95,7 +91,6 @@ class PongoServiceProvider extends ServiceProvider {
 	 */
 	protected function activateFacades()
 	{
-
 		$app = $this->app;
 
 		// Marker facade
@@ -106,7 +101,6 @@ class PongoServiceProvider extends ServiceProvider {
 		$app->booting(function() {
             $this->aliasLoader->alias('Marker', 'Pongo\Cms\Support\Facades\Marker');
 		});
-
 	}
 
 	/**
@@ -116,7 +110,6 @@ class PongoServiceProvider extends ServiceProvider {
 	 */
 	protected function loadServiceProviders()
 	{
-
 		$app = $this->app;
 
 		$providers = Config::get('cms::settings.providers');
@@ -129,7 +122,6 @@ class PongoServiceProvider extends ServiceProvider {
 
 			$app->register($provider_name);
 		}
-
 	} 
 
 }
