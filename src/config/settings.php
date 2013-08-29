@@ -2,17 +2,41 @@
 
 return array(
 
-	'markers' => array(
-
-		'BACK' => 'Pongo\Cms\Classes\Markers\BackMarker',
-		'IMAGE' => 'Pongo\Cms\Classes\Markers\ImageMarker',
-
-	),
+	/**
+	 * Custom Service Providers
+	 *
+	 * Loaded on boot by PongoServiceProvider -> loadServiceProviders()
+	 */
 
 	'providers' => array(
 
 		'MarkerServiceProvider',
+		'ToolServiceProvider',
 
-	)
+	),
+
+	/**
+	 * Custom Facades
+	 *
+	 * Loaded on boot by PongoServiceProvider -> activateFacades()
+	 */
+
+	'facades' => array(
+
+		'Marker' => array(
+
+			'class' => 'Pongo\Cms\Classes\Marker',
+			'alias' => 'Pongo\Cms\Support\Facades\Marker'
+
+		),
+
+		'Tool' => array(
+
+			'class' => 'Pongo\Cms\Classes\Tool',
+			'alias' => 'Pongo\Cms\Support\Facades\Tool'
+
+		),
+
+	),
 
 );

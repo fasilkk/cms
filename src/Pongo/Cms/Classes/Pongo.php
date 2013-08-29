@@ -7,4 +7,14 @@ class Pongo {
 		
 	}
 
+	/**
+	 * Get Class name back
+	 * 
+	 * @return string Name of the class
+	 */
+	public function name()
+	{
+		return get_class($this);
+	}
+	
 }

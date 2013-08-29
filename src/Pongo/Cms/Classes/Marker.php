@@ -28,6 +28,7 @@ class Marker {
 			// String found
 			$found = $matches[2][$key];
 
+			// Check if marker method is IoCed
 			if ( App::bound($method) ) {
 
 				// Clean HTML
@@ -36,7 +37,7 @@ class Marker {
 
 				$v = json_decode($found, true);
 
-				if(!is_array($v)) $v = array();
+				if ( ! is_array($v) ) $v = array();
 
 				// Get JSON variables
 				$vars = $v;
@@ -74,6 +75,16 @@ class Marker {
 
 		// Run instance
 		return $marker->run();
+	}
+
+	/**
+	 * Get Class name back
+	 * 
+	 * @return string Name of the class
+	 */
+	public function name()
+	{
+		return get_class($this);
 	}
 
 }

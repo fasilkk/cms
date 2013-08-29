@@ -1,5 +1,9 @@
 <h1>Dashboard</h1>
 
+{{Tool::name()}}
+
+{{Marker::name()}}
+
 {{MARKER('[$BACK[]]')}}
 
 {{MARKER('[$IMAGE[{

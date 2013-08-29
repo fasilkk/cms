@@ -34,6 +34,7 @@ class PongoServiceProvider extends ServiceProvider {
 
 		// Run accessor methods
 		$this->loadServiceProviders();
+		$this->activateFacades();
 
 		// Inclusions
 		require __DIR__.'/../../helpers.php';
@@ -49,7 +50,6 @@ class PongoServiceProvider extends ServiceProvider {
 	public function register()
 	{		
 		// Run accessor methods
-		$this->activateFacades();
 		$this->bindRepositories();
 	}
 
@@ -80,7 +80,7 @@ class PongoServiceProvider extends ServiceProvider {
 
 		// Pongo class
 		$app->bind('Pongo', function() {
-			return new \Pongo\Cms\Classes\Pongo;
+			return new Classes\Pongo;
 		});
 	}
 
@@ -93,14 +93,21 @@ class PongoServiceProvider extends ServiceProvider {
 	{
 		$app = $this->app;
 
-		// Marker facade
-		$app['Marker'] = $app->share(function($app) {
-			return new \Pongo\Cms\Classes\Marker;
-		});
+		$facades = Config::get('cms::settings.facades');
 
-		$app->booting(function() {
-            $this->aliasLoader->alias('Marker', 'Pongo\Cms\Support\Facades\Marker');
-		});
+		foreach ($facades as $facade => $path) {
+			
+			// Share facade name
+			$app[$facade] = $app->share(function($app) use ($path) {
+				return new $path['class'];
+			});
+
+			// Alias facade
+			$app->booting(function() use ($facade, $path) {
+				$this->aliasLoader->alias($facade, $path['alias']);
+			});
+			
+		}
 	}
 
 	/**
