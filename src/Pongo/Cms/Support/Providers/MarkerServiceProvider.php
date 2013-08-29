@@ -12,12 +12,10 @@ class MarkerServiceProvider extends ServiceProvider {
 		// Bind Markers according with cms::settings.markers
 		foreach (Config::get('cms::settings.markers') as $methodName => $className) {
 
-			// $app->bind($methodName, function() use ($classLoad) { return new $classLoad(); });
 			$app->bind($methodName, function() use ($className) { return new $className; });
 
 		}
 
-		// $app->bind('BACK', function() {	return new Markers\BackMarker; });
 	}
 
 }

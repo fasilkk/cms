@@ -2,4 +2,8 @@
 
 {{MARKER('[$BACK[]]')}}
 
-{{MARKER('[$IMAGE[]]')}}
+{{MARKER('[$IMAGE[{
+	"name":"file.jpg",
+	"w":"200",
+	"h":"50"
+}]]')}}

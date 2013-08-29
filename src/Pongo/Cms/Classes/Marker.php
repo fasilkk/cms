@@ -4,16 +4,14 @@ use App;
 
 class Marker {
 
-	/*protected $content;
-
-	public function __construct($content_text)
-	{
-		$this->content = $content_text;
-	}*/
-
+	/**
+	 * Decode Marker string text
+	 * 
+	 * @param  string $text Marker code
+	 * @return string 		Marker's decoded blade view
+	 */
 	public function decode($text)
-	{
-		
+	{		
 		$tmp_text = trim($text);
 
 		//con json
@@ -54,18 +52,28 @@ class Marker {
 		}
 
 		return $decoded;
-
 	}
 
+	/**
+	 * Marker magic method
+	 * 
+	 * @param  string $name      Marker tag
+	 * @param  array $arguments  Marker arguments
+	 * @return string            Marker's decoded blade view
+	 */
 	protected function __call($name, $arguments)
-	{
-		
+	{		
+		// Instantiate marker class
 		$marker = App::make($name);
 
-		$content = $marker->run();
+		// Pass tag name
+		$marker->name = $name;
 
-		return $content;
+		// Pass arguments as parameters
+		$marker->parameters = $arguments;
 
+		// Run instance
+		return $marker->run();
 	}
 
 }
