@@ -1,25 +1,19 @@
 <?php namespace Pongo\Cms\Controllers;
 
-use Pongo, Config, Input, Auth, Lang, Asset;
-use Pongo\Cms\Support\Repositories\UserRepositoryInterface;
-
+use Input, Redirect, Auth, Pongo;
 
 class DashboardController extends BaseController {
 
-	protected $users;
-
-	public function __construct(UserRepositoryInterface $users)
+	public function __construct()
 	{
 		parent::__construct();
 
-		$this->users = $users;
-
-		// $this->beforeFilter('pongo.auth');
+		$this->beforeFilter('pongo.auth');
 	}
 
 	public function index()
 	{
-		return Pongo::view('interface.partials.dashboard');
+		return Pongo::view('partials.dashboard');
 	}
 
 }

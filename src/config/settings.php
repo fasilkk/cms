@@ -18,7 +18,7 @@ return array(
 		// Dependency providers
 
 		'Teepluss\Asset\AssetServiceProvider',
-		'Krucas\Notification\NotificationServiceProvider',
+		'Prologue\Alerts\AlertsServiceProvider',
 
 	),
 
@@ -67,10 +67,10 @@ return array(
 
 		),
 
-		'Notification' => array(
+		'Alert' => array(
 
-			'class' => 'Krucas\Notification\Notification',
-			'alias' => 'Krucas\Notification\Facades\Notification'
+			'class' => 'Prologue\Alerts\Alert',
+			'alias' => 'Prologue\Alerts\Facades\Alert'
 
 		),
 

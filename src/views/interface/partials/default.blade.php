@@ -1,1 +1,0 @@
-<h1>DEFAULT VIEW</h1>

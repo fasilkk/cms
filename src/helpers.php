@@ -36,8 +36,21 @@ function MARKER($marker)
 }
 
 /**
- * PATHS
+ * SYSTEM
  */
+
+if ( ! function_exists('env'))
+{
+	/**
+	 * Get environment
+	 * @param string $env
+	 * @return string
+	 */
+	function env($env)
+	{
+		return app()->env == $env;
+	}
+}
 
 if ( ! function_exists('public_path'))
 {

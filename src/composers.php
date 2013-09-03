@@ -3,8 +3,8 @@
 /**
  * PongoCMS Interface Composer
  */
-View::composer('cms::interface.templates.default', function($view) {
+View::composer('cms::templates.default', function($view) {
 
-	$view->title = Auth::check();
+	$view->title = 'Pongo CMS';
 
 });

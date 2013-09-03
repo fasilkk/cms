@@ -1,6 +1,6 @@
 <?php namespace Pongo\Cms\Classes;
 
-use Asset, HTML, View;
+use Alert, Asset, Config, HTML, View;
 
 class Pongo {
 	
@@ -11,15 +11,26 @@ class Pongo {
 	 */
 	public $asset_path = 'packages/pongocms/cms/';
 
+	/**
+	 * Asset Development base path
+	 * 
+	 * @var string
+	 */
+	public $development_path = 'dev/app/';
+
+	/**
+	 * Pongo constructor
+	 */
 	public function __construct()
 	{
 		
 	}
 
 	/**
-	 * Asset helper shortcut
+	 * Asset shortcut
 	 * 
 	 * @param  string $source Asset path
+	 * @param  bool   $isDev  Development stage
 	 * @param  array  $attributes
 	 * @return string         Asset path
 	 */
@@ -28,7 +39,9 @@ class Pongo {
 		if ( ! is_null($source)) {
 			$type = (pathinfo($source, PATHINFO_EXTENSION) == 'css') ? 'style' : 'script';
 
-			return HTML::$type($this->asset_path . $source, $attributes);
+			$path = env('local') ? $this->development_path : $this->asset_path;
+
+			return HTML::$type($path . $source, $attributes);
 		} 
 	}
 
@@ -64,7 +77,9 @@ class Pongo {
 	 */
 	public function add_asset($container = 'default', $name = 'asset', $source = '', $dependency = null)
 	{
-		return Asset::container($container)->add($name, $source, $dependency);
+		$path = env('local')  ? $this->development_path : $this->asset_path;
+
+		return Asset::container($container)->add($name, $path . $source, $dependency);
 	}
 
 	/**
@@ -86,6 +101,20 @@ class Pongo {
 		}
 
 		return View::make($view_name, $data);
+	}
+
+	/**
+	 * Show alert wrapper
+	 * 
+	 * @return string Alert message
+	 */
+	public function show_alert()
+	{
+		$format = Config::get('cms::formats.alert');
+
+		foreach (Alert::all($format) as $alert) {
+			return $alert;
+		}
 	}
 
 	/**

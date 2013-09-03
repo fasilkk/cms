@@ -17,7 +17,7 @@
         "php": ">=5.3.0",
         "illuminate/support": "4.0.x",
         "teepluss/asset": "dev-master",
-        "edvinaskrucas/notification": "1.*"
+        "prologue/alerts": "dev-master"
     },
     "autoload": {
         "classmap": [
