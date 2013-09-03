@@ -1,8 +1,8 @@
 <?php namespace Pongo\Cms\Models;
 
-use LaravelBook\Ardent\Ardent;
+use Eloquent;
 
-class User extends Ardent {
+class User extends Eloquent {
 	
 	/**
 	 * The database table used by the model.
@@ -32,27 +32,6 @@ class User extends Ardent {
 	 */
 	protected $guarded = array('id', 'password');
 
-	/* ARDENT */
 
-	/**
-	 * Ardent clear redundant attributes
-	 * 
-	 * @var boolean
-	 */
-	public $autoPurgeRedundantAttributes = true;
-
-	/**
-	 * Ardent validation rules
-	 * 
-	 * @var array
-	 */
-	public static $rules = array(
-
-		'username' 				=> 'required|between:4,16',
-		'email'					=> 'required|email',
-		'password'				=> 'required|alpha_num|between:4,8|confirmed',
-		'password_confirmation' => 'required|alpha_num|between:4,8'
-
-	);
 
 }

@@ -34,3 +34,20 @@ function MARKER($marker)
 {
 	return Marker::decode($marker);
 }
+
+/**
+ * PATHS
+ */
+
+if ( ! function_exists('public_path'))
+{
+	/**
+	 * Get public path.
+	 *
+	 * @return string
+	 */
+	function public_path($path = '')
+	{
+		return app()->make('path.public').($path ? '/'.$path : $path);
+	}
+}

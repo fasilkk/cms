@@ -1,7 +1,6 @@
 <?php namespace Pongo\Cms\Controllers;
 
-use /*App, */View, Config, Input, Auth, Lang;
-
+use Pongo, Config, Input, Auth, Lang, Asset;
 use Pongo\Cms\Support\Repositories\UserRepositoryInterface;
 
 
@@ -20,8 +19,7 @@ class DashboardController extends BaseController {
 
 	public function index()
 	{
-
-		return View::make('cms::interface.dashboard');
+		return Pongo::view('interface.partials.dashboard');
 	}
 
 }

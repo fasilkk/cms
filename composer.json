@@ -16,7 +16,8 @@
     "require": {
         "php": ">=5.3.0",
         "illuminate/support": "4.0.x",
-        "laravelbook/ardent": "dev-master"
+        "teepluss/asset": "dev-master",
+        "edvinaskrucas/notification": "1.*"
     },
     "autoload": {
         "classmap": [

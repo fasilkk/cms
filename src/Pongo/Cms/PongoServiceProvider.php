@@ -34,12 +34,15 @@ class PongoServiceProvider extends ServiceProvider {
 
 		// Run accessor methods
 		$this->loadServiceProviders();
+		$this->bindRepositories();
 		$this->activateFacades();
+		$this->bootCommands();
 
 		// Inclusions
 		require __DIR__.'/../../helpers.php';
 		require __DIR__.'/../../routes.php';
 		require __DIR__.'/../../filters.php';
+		require __DIR__.'/../../composers.php';
 	}
 
 	/**
@@ -49,8 +52,9 @@ class PongoServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{		
-		// Run accessor methods
-		$this->bindRepositories();
+		
+		$app = $this->app;
+
 	}
 
 	/**
@@ -72,16 +76,13 @@ class PongoServiceProvider extends ServiceProvider {
 	{		
 		$app = $this->app;
 
-		// User Repository Interface
-		$app->singleton(
-			'Pongo\Cms\Support\Repositories\UserRepositoryInterface',
-			'Pongo\Cms\Support\Repositories\UserRepositoryEloquent'
-		);
+		$repositories = Config::get('cms::settings.repositories');
 
-		// Pongo class
-		$app->bind('Pongo', function() {
-			return new Classes\Pongo;
-		});
+		foreach ($repositories as $repo) {
+			
+			$app->$repo['method']($repo['interface'], $repo['repository']);
+
+		}
 	}
 
 	/**
@@ -125,10 +126,35 @@ class PongoServiceProvider extends ServiceProvider {
 
 		foreach ($providers as $provider) {
 
+			if (substr_count($provider, '\\')>0) $provider_path = '';
+
 			$provider_name = "{$provider_path}{$provider}";
 
 			$app->register($provider_name);
 		}
-	} 
+	}
+
+	/**
+	 * Load custom Artisan commands
+	 *
+	 * @return void
+	 */
+	protected function bootCommands()
+	{
+		$app = $this->app;
+
+		$commands = Config::get('cms::settings.commands');
+
+		foreach ($commands as $command => $class) {
+			
+			$this->app[$command] = $this->app->share(function($app) use ($class) {
+				return new $class;
+			});
+
+			$reg_commands[] = $command;
+		}
+
+		$this->commands($reg_commands);
+	}
 
 }
