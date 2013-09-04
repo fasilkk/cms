@@ -36,6 +36,32 @@ function MARKER($marker)
 }
 
 /**
+ * LANG
+ */
+
+if ( ! function_exists('t'))
+{
+	/**
+	 * Translate the given message accordingly with active locale.
+	 *
+	 * @param  string  $id
+	 * @param  array   $parameters
+	 * @return string
+	 */
+	function t($id, $parameters = array())
+	{
+		$domain = 'messages';
+		
+		$locale = Config::get('cms::settings.language');
+
+		$str = "cms::lang.{$id}";
+
+		return app('translator')->trans($str, $parameters, $domain, $locale);
+	}
+}
+
+
+/**
  * SYSTEM
  */
 

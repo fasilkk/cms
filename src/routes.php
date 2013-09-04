@@ -20,7 +20,8 @@ Route::group(Config::get('cms::routes.cms_group_routes'), function() use ($pongo
 	Route::get('/', array('uses' => $pongoControllers.'LoginController@index', 'as' => 'cms.index'));
 	Route::get('login', array('uses' => $pongoControllers.'LoginController@index', 'as' => 'login.index'));
 	Route::post('login', array('uses' => $pongoControllers.'LoginController@login', 'as' => 'post.login'));
-	
+	Route::get('logout', array('uses' => $pongoControllers.'BaseController@logout', 'as' => 'logout'));
+
 	// DASHBOARD
 	Route::get('dashboard', array('uses' => $pongoControllers.'DashboardController@index', 'as' => 'dashboard.index'));
 

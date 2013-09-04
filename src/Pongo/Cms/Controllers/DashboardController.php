@@ -13,7 +13,7 @@ class DashboardController extends BaseController {
 
 	public function index()
 	{
-		return Pongo::view('partials.dashboard');
+		return Pongo::view('pages.dashboard');
 	}
 
 }

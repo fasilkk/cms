@@ -15,7 +15,7 @@ class MarkerServiceProvider extends ServiceProvider {
 	{
 		$app = $this->app;
 
-		// Bind Markers according with cms::settings.markers
+		// Bind Markers according with cms::system.markers
 		foreach (Config::get('cms::markers') as $methodName => $className) {
 
 			$app->bind($methodName, function() use ($className) { return new $className; });

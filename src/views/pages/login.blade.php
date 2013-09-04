@@ -12,11 +12,11 @@
 				{{Form::open(array('route' => 'post.login', 'id' => 'login-form', 'class' => 'form-inline'))}}
 					<div class="form-group">
 						<label for="username">Username</label>
-						<input type="text" class="form-control" id="username" autocorrect="off" autocapitalize="off" placeholder="Enter your username">
+						<input type="text" class="form-control" name="username" autocorrect="off" autocapitalize="off" placeholder="Enter your username">
 					</div>
 					<div class="form-group">
 						<label for="password">Password</label>
-						<input type="password" class="form-control" id="password" placeholder="Enter your password">
+						<input type="password" class="form-control" name="password" placeholder="Enter your password">
 					</div>
 					<button type="submit" class="btn btn-primary btn-block">login</button>
 				{{Form::close()}}

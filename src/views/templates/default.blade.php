@@ -26,9 +26,11 @@
 <body>
 
 	<div class="container">
+		
+		{{Pongo::show_alert()}}
 
 		@section('header')
-			{{Pongo::show_alert()}}
+			
 		@show
 		
 		@yield('layout')

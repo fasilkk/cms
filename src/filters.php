@@ -12,7 +12,7 @@ Route::filter('pongo.auth', function() {
 
 	if (Auth::guest())	{
 
-		Alert::error('Non hai le credenziali necessarie!')->flash();
+		Alert::error(t('alert.error.unauthorized'))->flash();
 
 		return Redirect::route('login.index');
 	}

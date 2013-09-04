@@ -29,6 +29,13 @@ class PongoServiceProvider extends ServiceProvider {
 	{
 		$this->package('pongo/cms');
 
+		// Inclusions
+		require __DIR__.'/../../start.php';
+		require __DIR__.'/../../helpers.php';
+		require __DIR__.'/../../routes.php';
+		require __DIR__.'/../../filters.php';
+		require __DIR__.'/../../composers.php';
+
 		// Instantiate AliasLoader
 		$this->aliasLoader = AliasLoader::getInstance();
 
@@ -36,13 +43,7 @@ class PongoServiceProvider extends ServiceProvider {
 		$this->loadServiceProviders();
 		$this->bindRepositories();
 		$this->activateFacades();
-		$this->bootCommands();
-
-		// Inclusions
-		require __DIR__.'/../../helpers.php';
-		require __DIR__.'/../../routes.php';
-		require __DIR__.'/../../filters.php';
-		require __DIR__.'/../../composers.php';
+		$this->bootCommands();		
 	}
 
 	/**
@@ -76,7 +77,7 @@ class PongoServiceProvider extends ServiceProvider {
 	{		
 		$app = $this->app;
 
-		$repositories = Config::get('cms::settings.repositories');
+		$repositories = Config::get('cms::system.repositories');
 
 		foreach ($repositories as $repo) {
 			
@@ -94,7 +95,7 @@ class PongoServiceProvider extends ServiceProvider {
 	{
 		$app = $this->app;
 
-		$facades = Config::get('cms::settings.facades');
+		$facades = Config::get('cms::system.facades');
 
 		foreach ($facades as $facade => $path) {
 			
@@ -120,7 +121,7 @@ class PongoServiceProvider extends ServiceProvider {
 	{
 		$app = $this->app;
 
-		$providers = Config::get('cms::settings.providers');
+		$providers = Config::get('cms::system.providers');
 
 		$provider_path = 'Pongo\Cms\Support\Providers\\';		
 
@@ -143,7 +144,7 @@ class PongoServiceProvider extends ServiceProvider {
 	{
 		$app = $this->app;
 
-		$commands = Config::get('cms::settings.commands');
+		$commands = Config::get('cms::system.commands');
 
 		foreach ($commands as $command => $class) {
 			

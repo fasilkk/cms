@@ -1,8 +1,8 @@
 <?php namespace Pongo\Cms\Models;
 
-use LaravelBook\Ardent\Ardent;
+use Eloquent;
 
-class Role extends Ardent {
+class Role extends Eloquent {
 	
 	/**
 	 * The database table used by the model.
@@ -12,47 +12,23 @@ class Role extends Ardent {
 	protected $table = 'roles';
 
 	/**
-	 * The attributes excluded from the model's JSON form.
-	 *
-	 * @var array
-	 */
-	// protected $hidden = array('password');
-
-	/**
-	 * Allowed mass assignment columns
-	 * 
-	 * @var array
-	 */
-	// protected $fillable = array('username', 'email');
-
-	/**
-	 * Danied mass assignment columns
-	 * 
-	 * @var array
-	 */
-	// protected $guarded = array('id', 'password');
-
-	/* ARDENT */
-
-	/**
-	 * Ardent clear redundant attributes
+	 * No timestamp needed
 	 * 
 	 * @var boolean
 	 */
-	public $autoPurgeRedundantAttributes = true;
+	public $timestamps = false;
 
 	/**
-	 * Ardent validation rules
+	 * Users relationship
+	 * Each role has many users
 	 * 
-	 * @var array
+	 * @return mixed
 	 */
-	public static $rules = array(
+	public function users()
+	{
+		return $this->hasMany('Pongo\Cms\Models\User');
+	}
 
-		/*'username' 				=> 'required|between:4,16',
-		'email'					=> 'required|email',
-		'password'				=> 'required|alpha_num|between:4,8|confirmed',
-		'password_confirmation' => 'required|alpha_num|between:4,8'*/
 
-	);
 
 }
