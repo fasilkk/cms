@@ -2,10 +2,10 @@
 
 @section('layout')
 
-	<div id="login" class="wrapper">
+	<div id="login" class="layout">
 
-		<div class="row">
-			<div id="login-panel" class="col-xs-12 col-sm-12 col-md-9 col-lg-7">
+		<div class="row-fluid">
+			<div id="login-panel" class="col-xs-12">
 
 				<h1>Pongo<span>CMS</span> <small>v2</small></h1>
 

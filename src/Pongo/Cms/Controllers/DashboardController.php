@@ -11,9 +11,9 @@ class DashboardController extends BaseController {
 		$this->beforeFilter('pongo.auth');
 	}
 
-	public function index()
+	public function showDashboard()
 	{
-		return Pongo::view('pages.dashboard');
+		return Pongo::view('sections.dashboard.dashboard');
 	}
 
 }

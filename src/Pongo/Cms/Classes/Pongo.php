@@ -46,6 +46,17 @@ class Pongo {
 	}
 
 	/**
+	 * Bootstrap virtual asset
+	 * 
+	 * @param  string $source
+	 * @return string
+	 */
+	public function bootJs($source)
+	{
+		return HTML::script($source);
+	}
+
+	/**
 	 * Asset container wrapper for scripts
 	 * 
 	 * @param  string $name Container name
@@ -110,7 +121,7 @@ class Pongo {
 	 */
 	public function show_alert()
 	{
-		$format = Config::get('cms::formats.alert');
+		$format = Config::get('cms::system.alert_tpl');
 
 		foreach (Alert::all($format) as $alert) {
 			return $alert;

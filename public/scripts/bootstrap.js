@@ -1,0 +1,1 @@
+var Pongo={};Pongo.base="http://localhost:9000/cms";

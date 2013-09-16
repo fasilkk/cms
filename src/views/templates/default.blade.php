@@ -20,18 +20,18 @@
 	{{Pongo::styles('header')}}
 
 	{{Pongo::asset('bower_components/modernizr/modernizr.js')}}
+	{{Pongo::asset('bower_components/angular/angular.js')}}
+	{{Pongo::bootJs('cms/bootstrap.js')}}
 	{{Pongo::scripts('header')}}
 
 </head>
 <body>
 
-	<div class="container">
+	<div class="wrapper">
 		
 		{{Pongo::show_alert()}}
 
-		@section('header')
-			
-		@show
+		@yield('header')
 		
 		@yield('layout')
 
@@ -40,6 +40,8 @@
 		@show
 		
 	</div>
+
+	@yield('page-bar')
 
 	<!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
 	<script>
@@ -53,8 +55,11 @@
 
 	{{Pongo::asset('bower_components/jquery/jquery.js')}}
 	{{Pongo::asset('bower_components/underscore/underscore.js')}}
-	{{Pongo::asset('scripts/pongo.js')}}
 	{{Pongo::asset('scripts/plugins/nestable.js')}}
+	{{Pongo::asset('scripts/pongo.js')}}
+	@section('footer-js')
+	{{Pongo::asset('scripts/main.js')}}
+	@show
 	{{Pongo::scripts('footer')}}
 	{{Pongo::asset('bower_components/bootstrap/js/affix.js')}}
 	{{Pongo::asset('bower_components/bootstrap/js/alert.js')}}

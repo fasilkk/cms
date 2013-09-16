@@ -3,14 +3,27 @@
 return array(
 
 	/**
-	 * Default PongoCMS language
+	 * PongoCMS :: Default language
 	 */
 	
 	'language' => 'en',
 
 	/**
-	 * Default Admin account
+	 * PongoCMS :: Available languages
 	 */
+	
+	'languages' => array(
+
+		'en' => 'English',
+
+		'it' => 'Italiano',
+
+	),
+	
+	/**
+	 * PongoCMS :: Default Admin account
+	 */
+	
 	'admin_account' => array(
 
 		'username' 	=> 'admin',

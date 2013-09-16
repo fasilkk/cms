@@ -2,13 +2,13 @@
 
 use Illuminate\Support\Facades\Facade;
 
-class Page extends Facade {
+class Pager extends Facade {
 
 	/**
 	 * Get the registred name of the component
 	 * 
 	 * @return string
 	 */
-	protected static function getFacadeAccessor() { return 'Page'; }
+	protected static function getFacadeAccessor() { return 'Pager'; }
 
 }

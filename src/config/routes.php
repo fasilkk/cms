@@ -13,7 +13,7 @@ return array(
 	),
 	
 	'api_group_routes' => array(
-		'prefix' => 'api',
+		'prefix' => 'cms/api',
 		// 'domain' => ''
 	)
 

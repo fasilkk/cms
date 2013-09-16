@@ -25,7 +25,7 @@
 </head>
 <body>
 
-	<div class="container">
+	<div class="wrapper">
 
 		@section('header')
 

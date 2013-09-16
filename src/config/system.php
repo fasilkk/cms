@@ -18,6 +18,36 @@ return array(
 	),
 
 	/**
+	 * Default order_id
+	 */
+	
+	'default_order' => 1000,
+
+	/**
+	 * PongoCMS :: Locales
+	 */
+	
+	'locale' => array(
+		
+		'en' => 'en_US',
+
+		'it' => 'it_IT'
+	),
+
+	/**
+	 * PongoCMS :: Date and time format
+	 */
+	
+	'date_format' => 'm/d/Y',
+	'time_format' => 'H:i',
+
+	/**
+	 * PongoCMS :: Notification alert template
+	 */
+	
+	'alert_tpl' => '<div class="alert-msg :key">:message</div>',
+
+	/**
 	 * Custom Service Providers
 	 *
 	 * PongoServiceProvider loaded on runtime by /app/config/app.php
@@ -59,10 +89,10 @@ return array(
 
 		),
 
-		'Page' => array(
+		'Pager' => array(
 
-			'class' => 'Pongo\Cms\Classes\Page',
-			'alias' => 'Pongo\Cms\Support\Facades\Page'
+			'class' => 'Pongo\Cms\Classes\Pager',
+			'alias' => 'Pongo\Cms\Support\Facades\Pager'
 
 		),
 

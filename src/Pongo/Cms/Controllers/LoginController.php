@@ -14,9 +14,9 @@ class LoginController extends BaseController {
 	public function index()
 	{
 		// Js page repository
-		Pongo::add_asset('footer', 'login', 'scripts/pages/login.js');
+		// Pongo::add_asset('footer', 'login', 'scripts/pages/login.js');
 
-		return Pongo::view('pages.login');
+		return Pongo::view('sections.login.login');
 	}
 
 	public function login()
@@ -32,7 +32,7 @@ class LoginController extends BaseController {
 
 			Alert::info(t('alert.info.welcome', array('user' => Input::get('username'))))->flash();
 
-			return Redirect::route('dashboard.index');
+			return Redirect::route('dashboard');
 
 		} else {
 
@@ -50,6 +50,7 @@ class LoginController extends BaseController {
 		Session::put('USERID', Auth::user()->id);
 		Session::put('USERNAME', Auth::user()->username);
 		Session::put('EMAIL', Auth::user()->email);
+		Session::put('ROLEID', Auth::user()->role->id);
 		Session::put('ROLENAME', Auth::user()->role->name);
 		Session::put('LEVEL', Auth::user()->role->level);
 		Session::put('LANG', Auth::user()->lang);
