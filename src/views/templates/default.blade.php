@@ -16,32 +16,22 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 	<link rel="shortcut icon" href="favicon.ico" />
 	
-	{{Pongo::asset('styles/main.css')}}
-	{{Pongo::styles('header')}}
+	{{Render::asset('styles/main.css')}}
+	{{Render::styles('header')}}
 
-	{{Pongo::asset('bower_components/modernizr/modernizr.js')}}
-	{{Pongo::asset('bower_components/angular/angular.js')}}
-	{{Pongo::bootJs('cms/bootstrap.js')}}
-	{{Pongo::scripts('header')}}
+	{{Render::asset('bower_components/modernizr/modernizr.js')}}
+	{{Render::asset('bower_components/knockout.js/knockout.js')}}
+	{{Render::bootJs('cms/bootstrap.js')}}
+	{{Render::scripts('header')}}
 
 </head>
 <body>
-
-	<div class="wrapper">
 		
-		{{Pongo::show_alert()}}
-
-		@yield('header')
-		
-		@yield('layout')
-
-		@section('footer')			
-			<footer>PongoCMS v2.0.0 &copy; Pongoweb.it</footer>
-		@show
-		
-	</div>
+	@yield('layout')
 
 	@yield('page-bar')
+
+	@yield('modal')
 
 	<!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
 	<script>
@@ -53,26 +43,26 @@
 		ga('create','UA-XXXXX-X');ga('send','pageview');
 	</script>
 
-	{{Pongo::asset('bower_components/jquery/jquery.js')}}
-	{{Pongo::asset('bower_components/underscore/underscore.js')}}
-	{{Pongo::asset('scripts/plugins/nestable.js')}}
-	{{Pongo::asset('scripts/pongo.js')}}
+	{{Render::asset('bower_components/jquery/jquery.js')}}
+	{{Render::asset('bower_components/underscore/underscore.js')}}
+	{{Render::asset('scripts/plugins/nestable.js')}}
+	{{Render::asset('scripts/pongo.js')}}
 	@section('footer-js')
-	{{Pongo::asset('scripts/main.js')}}
+	{{Render::asset('scripts/main.js')}}
 	@show
-	{{Pongo::scripts('footer')}}
-	{{Pongo::asset('bower_components/bootstrap/js/affix.js')}}
-	{{Pongo::asset('bower_components/bootstrap/js/alert.js')}}
-	{{Pongo::asset('bower_components/bootstrap/js/dropdown.js')}}
-	{{Pongo::asset('bower_components/bootstrap/js/tooltip.js')}}
-	{{Pongo::asset('bower_components/bootstrap/js/modal.js')}}
-	{{Pongo::asset('bower_components/bootstrap/js/transition.js')}}
-	{{Pongo::asset('bower_components/bootstrap/js/button.js')}}
-	{{Pongo::asset('bower_components/bootstrap/js/popover.js')}}
-	{{Pongo::asset('bower_components/bootstrap/js/carousel.js')}}
-	{{Pongo::asset('bower_components/bootstrap/js/scrollspy.js')}}
-	{{Pongo::asset('bower_components/bootstrap/js/collapse.js')}}
-	{{Pongo::asset('bower_components/bootstrap/js/tab.js')}}
+	{{Render::scripts('footer')}}
+	{{Render::asset('bower_components/bootstrap/js/affix.js')}}
+	{{Render::asset('bower_components/bootstrap/js/alert.js')}}
+	{{Render::asset('bower_components/bootstrap/js/dropdown.js')}}
+	{{Render::asset('bower_components/bootstrap/js/tooltip.js')}}
+	{{Render::asset('bower_components/bootstrap/js/modal.js')}}
+	{{Render::asset('bower_components/bootstrap/js/transition.js')}}
+	{{Render::asset('bower_components/bootstrap/js/button.js')}}
+	{{Render::asset('bower_components/bootstrap/js/popover.js')}}
+	{{Render::asset('bower_components/bootstrap/js/carousel.js')}}
+	{{Render::asset('bower_components/bootstrap/js/scrollspy.js')}}
+	{{Render::asset('bower_components/bootstrap/js/collapse.js')}}
+	{{Render::asset('bower_components/bootstrap/js/tab.js')}}
 
 </body>
 </html>

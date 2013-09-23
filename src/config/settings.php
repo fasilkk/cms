@@ -3,15 +3,20 @@
 return array(
 
 	/**
+	 * PongoCMS :: Active theme name
+	 *
+	 * Saved into THEME constant in start.php
+	 */
+	'theme' => 'default',
+
+	/**
 	 * PongoCMS :: Default language
 	 */
-	
 	'language' => 'en',
 
 	/**
 	 * PongoCMS :: Available languages
 	 */
-	
 	'languages' => array(
 
 		'en' => 'English',
@@ -23,7 +28,6 @@ return array(
 	/**
 	 * PongoCMS :: Default Admin account
 	 */
-	
 	'admin_account' => array(
 
 		'username' 	=> 'admin',

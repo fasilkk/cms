@@ -1,37 +1,45 @@
 @extends('cms::templates.default')
 
-@section('header')
-	@include('cms::partials.navbar')
-@stop
-
 @section('page-bar')
 	@include('cms::partials.pagebar')
 @stop
 
 @section('footer-js')
 	@parent
-	{{Pongo::asset('scripts/sections/page.js')}}
+	{{Render::asset('scripts/sections/page.js')}}
 @stop
 
 @section('layout')
 	
-	@yield('subbar')
+	<div class="wrapper">
 
-	<div id="page" class="layout">
+		{{Pongo::showAlert()}}
 
-		<div class="row">
+		@include('cms::partials.navbar')
 
-			<div id="page-panel" class="col-xs-12">
+		@yield('subbar')		
 
-				@yield('content')
+		<div id="page" class="layout">
+
+			<div class="row">
+
+				<div id="page-panel" class="col-xs-12">
+
+					<div id="overlay"></div>
+
+					@yield('content')
+
+				</div>
 
 			</div>
 
+			@yield('element-bar')
+
+			@yield('option-bar')
+
 		</div>
-
-		@yield('element-bar')
-
-		@yield('option-bar')
+		
+		<footer>PongoCMS v2.0.0 &copy; Pongoweb.it</footer>
 
 	</div>
 

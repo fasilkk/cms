@@ -82,7 +82,7 @@ class Marker {
 	 * 
 	 * @return string Name of the class
 	 */
-	public function name()
+	public function className()
 	{
 		return get_class($this);
 	}

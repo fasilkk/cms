@@ -8,6 +8,8 @@
 function D($value)
 {
 	echo '<pre>' . print_r($value, true) . '</pre>';
+
+	die();
 }
 
 /**
@@ -18,6 +20,8 @@ function D($value)
 function DJ($value)
 {
 	return '<pre>' . print_r($value, true) . '</pre>';
+
+	die();
 }
 
 /**
@@ -104,6 +108,45 @@ if ( ! function_exists('public_path'))
  * TOOLS
  */
 
+if ( ! function_exists('array_min_key'))
+{
+	/**
+	 * Reduce an array with minimal key
+	 * 
+	 * @param  array 	$array
+	 * @param  mixed 	$min_key
+	 * @return array
+	 */
+	function array_min_key($array, $min_key)
+	{
+		
+		$min_val = $array[$min_key];
+
+		foreach ($array as $key => $value) {
+			if($value >= $min_val) {
+				$tmp_array[$key] = $value;
+			}
+		}
+
+		return $tmp_array;
+	}
+}
+
+if ( ! function_exists('active'))
+{
+	/**
+	 * Print out class=active if true
+	 * 
+	 * @param  string $var 
+	 * @param  string $fix 
+	 * @return bool
+	 */
+	function active($var, $fix)
+	{
+		return Tool::isActive($var, $fix);
+	}
+}
+
 if ( ! function_exists('checked'))
 {
 	/**
@@ -116,6 +159,20 @@ if ( ! function_exists('checked'))
 	function checked($var, $fix)
 	{
 		return Tool::isChecked($var, $fix);
+	}
+}
+
+if ( ! function_exists('is_empty'))
+{
+	/**
+	 * Check object is empty
+	 * 
+	 * @param  string $var 
+	 * @return bool
+	 */
+	function is_empty($var)
+	{
+		return (count($var) === 0) ? true : false;
 	}
 }
 

@@ -27,7 +27,7 @@ class PongoServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		$this->package('pongo/cms');
+		$this->package('pongocms/cms');
 
 		// Inclusions
 		require __DIR__.'/../../start.php';
@@ -43,7 +43,7 @@ class PongoServiceProvider extends ServiceProvider {
 		$this->loadServiceProviders();
 		$this->bindRepositories();
 		$this->activateFacades();
-		$this->bootCommands();		
+		$this->bootCommands();
 	}
 
 	/**

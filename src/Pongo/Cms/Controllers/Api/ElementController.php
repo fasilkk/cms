@@ -2,7 +2,7 @@
 
 use Pongo\Cms\Models\Element;
 use Pongo\Cms\Models\Page;
-use Config, DB, Input, Pager, Session, Str;
+use Config, DB, Input, Session, Str;
 
 class ElementController extends ApiController {
 

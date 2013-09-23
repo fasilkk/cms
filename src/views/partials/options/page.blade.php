@@ -9,19 +9,19 @@
 		</header>
 		
 		<ul class="options list-unstyled">
-			<li class="active">
+			<li{{active('settings', $section)}}>
 				<a href="{{route('page.settings', array('id' => $id))}}">Settings</a>
 			</li>
-			<li>
+			<li{{active('layout', $section)}}>
 				<a href="{{route('page.layout', array('id' => $id))}}">Layout</a>
 			</li>
-			<li>
+			<li{{active('seo', $section)}}>
 				<a href="{{route('page.seo', array('id' => $id))}}">Seo</a>
 			</li>
-			<li>
+			<li{{active('media', $section)}}>
 				<a href="{{route('page.media', array('id' => $id))}}">Media</a>
 			</li>
-			<li>
+			<li{{active('link', $section)}}>
 				<a href="{{route('page.link', array('id' => $id))}}">Linked pages</a>
 			</li>
 		</ul>

@@ -1,96 +1,200 @@
 <?php namespace Pongo\Cms\Classes;
 
-use Alert, Asset, Config, HTML, View;
+use Pongo\Cms\Models\Page;
+use Alert, Asset, Config, View;
 
-class Pongo {
-	
+class Pongo {	
+
 	/**
-	 * Asset base path
+	 * Create element list by page_id
 	 * 
-	 * @var string
+	 * @param  int $page_id    page id
+	 * @return string          element itwm view
 	 */
-	public $asset_path = 'packages/pongocms/cms/';
-
-	/**
-	 * Asset Development base path
-	 * 
-	 * @var string
-	 */
-	public $development_path = 'dev/app/';
-
-	/**
-	 * Pongo constructor
-	 */
-	public function __construct()
+	public function createElement($page_id)
 	{
-		
+		$items = Page::find($page_id)->elements;
+
+		$item_view = $this->view('partials.elementitem');
+		$item_view['items'] = $items;
+
+		return $item_view;
 	}
 
 	/**
-	 * Asset shortcut
+	 * Create page list recursively
 	 * 
-	 * @param  string $source Asset path
-	 * @param  bool   $isDev  Development stage
-	 * @param  array  $attributes
-	 * @return string         Asset path
+	 * @param  int $parent_id 	pages's parent id
+	 * @param  string $lang 	available languages
+	 * @return string           page item view
 	 */
-	public function asset($source = null, $attributes = array())
-	{		
-		if ( ! is_null($source)) {
-			$type = (pathinfo($source, PATHINFO_EXTENSION) == 'css') ? 'style' : 'script';
+	public function createPage($parent_id, $lang, $pageid = 0)
+	{
+		$items = Page::where('parent_id', $parent_id)
+					 ->where('lang', $lang)
+					 ->orderBy('order_id')
+					 ->get();
 
-			$path = env('local') ? $this->development_path : $this->asset_path;
+		$item_view = $this->view('partials.pageitem');
+		$item_view['items'] = $items;
+		$item_view['pageid'] = $pageid;
+		$item_view['parent_id'] = $parent_id;
 
-			return HTML::$type($path . $source, $attributes);
+		return $item_view;
+	}
+
+	/**
+	 * Get actual url segments
+	 * -> full, first, last, prev
+	 * 
+	 * @return array
+	 */
+	public function getUrl()
+	{
+		$full_url = $_SERVER['REQUEST_URI'];
+
+		$segments = explode('/', $full_url);
+
+		array_shift($segments);
+
+		$n_segments = count($segments);
+
+		$url_arr = array();
+
+		// full
+		$url_arr['full'] = $full_url;
+
+		// first
+		$url_arr['first'] = '/' . $segments[0];
+
+		// last
+		$url_arr['last'] = '/' . $segments[$n_segments - 1];
+
+		// prev
+		$url_arr['prev'] = str_replace($url_arr['last'], '', $full_url);
+
+		return $url_arr;
+	}
+
+	/**
+	 * Check page role_level against user level
+	 * 
+	 * @param  int $role_level page role_level
+	 * @return void
+	 */
+	public function grantEdit($role_level)
+	{
+		$blocked =  ($role_level > LEVEL) ? true : false;
+
+		if($blocked) {
+
+			$response = array(
+				'status' 	=> 'error',
+				'msg'		=> t('alert.error.not_granted')
+			);
+
+			return $response;
 		} 
 	}
 
 	/**
-	 * Bootstrap virtual asset
+	 * Create a back recursive site structure of pages
 	 * 
-	 * @param  string $source
+	 * @param  int     $id        page id
+	 * @param  string  $field     db column to target
+	 * @param  string  $separator optional separator
+	 * @param  boolean $url       create a url string
+	 * @param  boolean $link      make each chunk linkable to its url
+	 * @param  string  $context   site or cms context
 	 * @return string
 	 */
-	public function bootJs($source)
+	public function pageTree($id, $field = 'slug', $separator = '', $url = false, $link = false, $context = 'cms')
 	{
-		return HTML::script($source);
+		if($url) {
+			$field = 'slug';
+			$separator = '/';
+		}
+
+		$str = $this->recursivePageTree($id, $field, $separator, $url, $link, $context);
+
+		$result =  ($url and !$link) ? url($str) : $str;
+
+		return $result;
+
 	}
 
 	/**
-	 * Asset container wrapper for scripts
+	 * Recursive process of pageTree method
 	 * 
-	 * @param  string $name Container name
-	 * @return string       Asset string
+	 * @param  int     $id        page id
+	 * @param  string  $field     db column to target
+	 * @param  string  $separator optional separator
+	 * @param  boolean $url       create a url string
+	 * @param  boolean $link      make each chunk linkable to its url
+	 * @param  string  $context   site or cms context
+	 * @return string
 	 */
-	public function scripts($name = 'default')
+	protected function recursivePageTree($id, $field, $separator, $url, $link, $context)
 	{
-		return Asset::container($name)->scripts();
+		$page = Page::find($id);
+
+		if($field == 'slug') {
+			
+			$separator = '';
+
+			$slug_arr = explode('/', $page->$field);
+
+			$page_field = '/' . end($slug_arr);
+
+		} else {
+
+			$page_field = $page->$field;
+
+		}
+
+		if($context == 'cms') {
+
+			$slug = link_to_cms('page/edit/' . $page->id, $page_field);
+
+		} else {
+
+			$slug = link_to($page->slug, $page_field);
+
+		}
+
+		if($page->parent_id == 0) {
+
+			$str = ($link and !$url) ? $slug : $page_field;
+
+		} else {
+
+			if($link and !$url) {
+
+				$str = $this->recursivePageTree($page->parent_id, $field, $separator, $url, $link, $context) . $separator . $slug;
+
+			} else {
+
+				$str = $this->recursivePageTree($page->parent_id, $field, $separator, $url, $link, $context) . $separator . $page_field;
+
+			}
+
+		}
+
+		return $str;				  
 	}
 
 	/**
-	 * Asset container wrapper for styles
+	 * Show alert wrapper
 	 * 
-	 * @param  string $name Container name
-	 * @return string       Asset string
+	 * @return string Alert message
 	 */
-	public function styles($name = 'default')
+	public function showAlert()
 	{
-		return Asset::container($name)->styles();
-	}
+		$format = Config::get('cms::system.alert_tpl');
 
-	/**
-	 * Append asset to container
-	 * @param  string $container  Container name
-	 * @param  string $name       Asset name
-	 * @param  string $source     Asset source
-	 * @param  string $dependency Asset dependency (comes after)
-	 * @return string             Print out the asset
-	 */
-	public function add_asset($container = 'default', $name = 'asset', $source = '', $dependency = null)
-	{
-		$path = env('local')  ? $this->development_path : $this->asset_path;
-
-		return Asset::container($container)->add($name, $path . $source, $dependency);
+		foreach (Alert::all($format) as $alert) {
+			return $alert;
+		}
 	}
 
 	/**
@@ -115,25 +219,11 @@ class Pongo {
 	}
 
 	/**
-	 * Show alert wrapper
-	 * 
-	 * @return string Alert message
-	 */
-	public function show_alert()
-	{
-		$format = Config::get('cms::system.alert_tpl');
-
-		foreach (Alert::all($format) as $alert) {
-			return $alert;
-		}
-	}
-
-	/**
 	 * Get Class name back
 	 * 
 	 * @return string Name of the class
 	 */
-	public function name()
+	public function className()
 	{
 		return get_class($this);
 	}

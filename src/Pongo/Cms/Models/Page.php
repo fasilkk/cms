@@ -26,17 +26,6 @@ class Page extends Eloquent {
 	protected $guarded = array('id');
 
 	/**
-	 * Role relationship
-	 * Each page has one role
-	 * 
-	 * @return mixed
-	 */
-	public function role()
-	{
-		return $this->belongsTo('Pongo\Cms\Models\Role');
-	}
-
-	/**
 	 * Elements relationship
 	 * Each element has many and belongs to many pages
 	 * 
@@ -47,6 +36,17 @@ class Page extends Eloquent {
 		return $this->belongsToMany('Pongo\Cms\Models\Element')
 					->withPivot('order_id')
 					->orderBy('order_id', 'asc');
+	}
+
+	/**
+	 * Author relationship
+	 * Each page has one author
+	 * 
+	 * @return mixed
+	 */
+	public function author()
+	{
+		return $this->hasOne('Pongo\Cms\Models\User', 'author_id');
 	}
 
 }

@@ -1,3 +1,5 @@
+{{-- */ if(!isset($pageid)) $pageid = 0; /* --}}
+
 <div class="page-bar">
 
 	<div class="page-body">
@@ -24,9 +26,13 @@
 		</header>
 		
 		@foreach(Config::get('cms::settings.languages') as $lang => $label)
-		<div class="dd" rel="{{$lang}}">
+		<div class="dd" rel="{{$lang}}">	
 			
-			{{Pager::createPage(0, $lang)}}
+			<ol class="dd-list">
+
+				{{Pongo::createPage(0, $lang, $pageid)}}
+
+			</ol>
 
 		</div>
 		@endforeach

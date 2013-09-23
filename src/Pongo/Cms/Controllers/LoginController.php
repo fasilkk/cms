@@ -1,6 +1,6 @@
 <?php namespace Pongo\Cms\Controllers;
 
-use Auth, Alert, Input, Redirect, Session, Pongo;
+use Auth, Alert, Input, Redirect, Render, Session, Pongo;
 
 class LoginController extends BaseController {
 	
@@ -14,7 +14,7 @@ class LoginController extends BaseController {
 	public function index()
 	{
 		// Js page repository
-		// Pongo::add_asset('footer', 'login', 'scripts/pages/login.js');
+		// Render::assetAdd('footer', 'login', 'scripts/pages/login.js');
 
 		return Pongo::view('sections.login.login');
 	}

@@ -3,27 +3,6 @@
 return array(
 
 	/**
-	 * Pongo CMS roles and levels
-	 */
-
-	'roles' => array(
-		
-		'admin' => 50,
-
-		'manager' => 40,
-
-		'editor' => 30,
-
-		'user' => 1
-	),
-
-	/**
-	 * Default order_id
-	 */
-	
-	'default_order' => 1000,
-
-	/**
 	 * PongoCMS :: Locales
 	 */
 	
@@ -31,7 +10,7 @@ return array(
 		
 		'en' => 'en_US',
 
-		'it' => 'it_IT'
+		'it' => 'it_IT',
 	),
 
 	/**
@@ -40,6 +19,35 @@ return array(
 	
 	'date_format' => 'm/d/Y',
 	'time_format' => 'H:i',
+
+	/**
+	 * Default order_id
+	 */
+	
+	'default_order' => 1000,
+
+	/**
+	 * Pongo CMS minimum role access to interface
+	 */
+	
+	'min_access' => 'editor',
+
+	/**
+	 * Pongo CMS startup roles and levels
+	 */
+
+	'roles' => array(
+		
+		'admin' 	=> 50,
+
+		'manager' 	=> 40,
+
+		'editor' 	=> 30,
+
+		'user' 		=> 1,
+
+		'guest' 	=> 0,
+	),
 
 	/**
 	 * PongoCMS :: Notification alert template
@@ -57,8 +65,6 @@ return array(
 	'providers' => array(
 
 		'MarkerServiceProvider',
-		'PageServiceProvider',
-		'ToolServiceProvider',
 
 		// Dependency providers
 
@@ -89,10 +95,17 @@ return array(
 
 		),
 
-		'Pager' => array(
+		'Render' => array(
 
-			'class' => 'Pongo\Cms\Classes\Pager',
-			'alias' => 'Pongo\Cms\Support\Facades\Pager'
+			'class' => 'Pongo\Cms\Classes\Render',
+			'alias' => 'Pongo\Cms\Support\Facades\Render'
+
+		),
+
+		'Theme' => array(
+
+			'class' => 'Pongo\Cms\Classes\Theme',
+			'alias' => 'Pongo\Cms\Support\Facades\Theme'
 
 		),
 

@@ -26,10 +26,9 @@ class CreateTablePages extends Migration {
 			$table->string('template', 100);
 			$table->string('header', 100);
 			$table->string('layout', 100);
-			$table->string('footer', 100);
+			$table->string('footer', 100);			
+			$table->integer('author_id');			
 			$table->integer('access_level');
-			$table->integer('author_id');
-			$table->integer('role_id');
 			$table->integer('role_level');
 			$table->integer('order_id')
 				  ->defaults(Config::get('cms::system.default_order'));

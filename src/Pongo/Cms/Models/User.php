@@ -21,6 +21,17 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	protected $hidden = array('password');
 
 	/**
+	 * Pages relationship
+	 * Each user has many pages
+	 * 
+	 * @return mixed
+	 */
+	public function pages()
+	{
+		return $this->hasMany('Pongo\Cms\Models\Page', 'author_id');
+	}
+
+	/**
 	 * Role relationship
 	 * Each user has one role
 	 * 

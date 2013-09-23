@@ -16,11 +16,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 	<link rel="shortcut icon" href="favicon.ico" />
 	
-	{{Pongo::asset('styles/main.css')}}
-	{{Pongo::styles('header')}}
+	{{Render::asset('styles/main.css')}}
+	{{Render::styles('header')}}
 
-	{{Pongo::asset('scripts/vendor/modernizer.js')}}
-	{{Pongo::scripts('header')}}
+	{{Render::asset('scripts/vendor/modernizer.js')}}
+	{{Render::scripts('header')}}
 
 </head>
 <body>
@@ -49,10 +49,10 @@
 		ga('create','UA-XXXXX-X');ga('send','pageview');
 	</script>
 
-	{{Pongo::asset('scripts/main.js')}}
-	{{Pongo::asset('scripts/plugins.js')}}
-	{{Pongo::asset('scripts/vendor/bootstrap.js')}}
-	{{Pongo::scripts('footer')}}
+	{{Render::asset('scripts/main.js')}}
+	{{Render::asset('scripts/plugins.js')}}
+	{{Render::asset('scripts/vendor/bootstrap.js')}}
+	{{Render::scripts('footer')}}
 
 </body>
 </html>

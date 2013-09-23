@@ -18,7 +18,7 @@
 
 			<ol class="dl-list">
 
-				{{Pager::createElement($id)}}
+				{{Pongo::createElement($id)}}
 
 			</ol>
 

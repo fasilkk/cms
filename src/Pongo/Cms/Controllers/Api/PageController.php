@@ -1,8 +1,8 @@
 <?php namespace Pongo\Cms\Controllers\Api;
 
-use Pongo\Cms\Models\Element;
 use Pongo\Cms\Models\Page;
-use Config, DB, Input, Pager, Session, Str;
+use Pongo\Cms\Models\Element;
+use Alert, Config, Input, Pongo, Redirect, Session, Str;
 
 class PageController extends ApiController {
 
@@ -60,9 +60,8 @@ class PageController extends ApiController {
 				'name' => $name,
 				'slug' => '/' . Str::slug($name),
 				'title' => $name,
-				'access_level' => 0,
 				'author_id' => USERID,
-				'role_id' => ROLEID,
+				'access_level' => 0,				
 				'role_level' => LEVEL,
 				'order_id' => Config::get('cms::system.default_order'),
 				'is_valid' => 0
@@ -143,7 +142,7 @@ class PageController extends ApiController {
 			$page->order_id = $key + 1;
 			$page->save();
 
-			$page->slug = Pager::pageTree($page->id, 'slug', '/');
+			$page->slug = Pongo::pageTree($page->id, 'slug', '/');
 			$page->save();
 
 			// Recursive update
@@ -154,5 +153,216 @@ class PageController extends ApiController {
 		}
 	}
 
+	public function pageSettingsClone()
+	{
+		$response = array(
+			'status' 	=> 'error',
+			'msg'		=> t('alert.error.page_order')
+		);
+
+		return json_encode($response);
+	}
+
+	/**
+	 * Delete a page after a form submission
+	 * 
+	 * @return void
+	 */
+	public function pageSettingsDelete()
+	{
+		if(Input::has('page_id')) {
+
+			$pid = Input::get('page_id');
+
+			$elements = Page::find($pid)->elements;
+
+			$subpages = Page::where('parent_id', $pid)->first();
+
+			// Check if NOT force delete page
+
+			if(!Input::has('force_delete')) {
+
+				// Has elements
+
+				if(!is_empty($elements)) {
+
+					Alert::error(t('alert.error.page_has_elements'))->flash();
+
+					return Redirect::route('page.settings', array('id' => $pid));
+
+				// Has subpages
+
+				} elseif(!is_empty($subpages)) {
+
+					Alert::error(t('alert.error.page_has_subpages'))->flash();
+
+					return Redirect::route('page.settings', array('id' => $pid));
+
+				// It's OK, ready to delete
+
+				} else {
+
+					if($this->deletePage($pid)) {
+
+						Alert::success(t('alert.success.page_deleted'))->flash();
+
+						return Redirect::route('page.deleted');
+					}
+
+				}
+
+			// Check if IS force delete page checked
+
+			} else {
+
+				// Has subpages
+
+				if(!is_empty($subpages)) {
+
+					Alert::error(t('alert.error.page_has_subpages'))->flash();
+
+					return Redirect::route('page.settings', array('id' => $pid));
+
+				// It's OK, ready to delete
+
+				} else {
+
+					// Loop over elements linked to page
+				
+					foreach ($elements as $element) {
+						
+						// Detach element from page
+						
+						\DB::table('element_page')
+							->where('page_id', $pid)
+							->where('element_id', $element->id)
+							->delete();
+
+						// Count element owner pages
+
+						$n = \DB::table('element_page')
+							->where('element_id', $element->id)
+							->count();
+
+						// If count = 0, delete element
+
+						if($n == 0) Element::find($element->id)->delete();
+
+					}
+
+					// Delete page
+
+					if($this->deletePage($pid)) {
+
+						Alert::success(t('alert.success.page_deleted'))->flash();
+
+						return Redirect::route('page.deleted');
+					}
+
+				}
+
+			}
+
+		} else {
+
+			Alert::error(t('alert.error.page_cant_delete'))->flash();
+
+			return Redirect::route('page.settings', array('id', $pid));	
+		}
+
+	}
+
+	/**
+	 * Delete a page
+	 * 
+	 * @param  int   $page_id page id
+	 * @return bool
+	 */
+	protected function deletePage($page_id)
+	{
+		$page = Page::find($page_id);
+
+		//DELETE FILES ASSOCIATION
+		// $page->files()->delete();
+
+		//DELETE BLOG ASSOCIATIONS
+		// $page->blogs()->delete();
+
+		//DELETE PAGE RELATIONS
+		// $page->pagerels()->delete();
+
+		//DELETE MENU RELATIONS
+		// $page->menus()->delete();
+
+		//DELETE PAGE
+		$page->delete();
+
+		return true;
+	}
+
+	/**
+	 * Save page settings form
+	 * 
+	 * @return string json encoded object
+	 */
+	public function pageSettingsSave()
+	{
+		$input = Input::all();
+
+		$v = new \Pongo\Cms\Support\Validators\Page\SettingsValidator;
+
+		if($v->passes()) {
+
+			extract($input);
+			
+			$page = Page::find($page_id);
+
+			// Author can edit the page
+			if(is_array($unauth = Pongo::grantEdit($page->role_level)))
+				return json_encode($unauth);
+			
+			$full_slug = $slug_base . '/' . Str::slug($slug_last);
+			$home = isset($is_home) ? 1 : 0;
+			$valid = isset($is_valid) ? 1 : 0;
+
+			// Disable all home pages in lang
+			if($home == 1) {
+				Page::where('lang', LANG)
+					->where('is_home', 1)
+					->update(array('is_home' => 0));
+			}
+
+			$page->name 		= $name;
+			$page->slug 		= $full_slug;
+			$page->author_id 	= USERID;
+			$page->access_level = $access_level;			
+			$page->role_level 	= $role_level;
+			$page->is_home 		= $home;
+			$page->is_valid 	= $valid;
+
+			$page->save();
+
+			$response = array(
+				'status' 	=> 'success',
+				'msg'		=> t('alert.success.save'),
+				'page'		=> array(
+										'id' 		=> $page_id,
+										'lang'		=> LANG,
+										'name'		=> $name,
+										'slug'		=> $full_slug,
+										'checked' 	=> $valid,
+										'home'		=> $home
+							   )
+			);
+
+
+		} else {
+
+			return json_encode($v->formatErrors());
+
+		}
+
+		return json_encode($response);		
+	}
 
 }

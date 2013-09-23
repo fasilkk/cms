@@ -13,7 +13,7 @@ class RolesTableSeeder extends Seeder {
 
 			$role = array(
 						'name' => $name,
-						'level' => $level
+						'level' => $level											
 					);
 
 			DB::table('roles')->insert($role);
