@@ -2,14 +2,28 @@
 
 interface PageRepositoryInterface {
 
-	public function all();
+	public function countPageElements($page);
 
-	public function find($id);
+	public function createPage($page_arr);
 
-	public function create($input);
+	public function deletePageElements($element);
 
-	public function update($id);
+	public function getPage($page_id);
 
-	public function delete($id);
+	public function getPageBySlug($slug);
+
+	public function getPageElements($page_id);
+
+	public function getPageList($parent_id, $lang);
+
+	public function getLangHomePage();
+
+	public function getSubPages($page_id);
+
+	public function resetHomePage();
+
+	public function savePage($page);
+
+	public function savePageElement($page, $element, $order);
 	
 }

@@ -24,7 +24,7 @@
 
 		@if($item->id > 0)
 
-			{{Pongo::createPage($item->id, $item->lang, $pageid)}}
+			{{Render::pageList($item->id, $item->lang, $pageid)}}
 
 		@endif
 

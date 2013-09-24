@@ -50,6 +50,20 @@ return array(
 	),
 
 	/**
+	 * Page wrapper type id
+	 */
+	
+	'wrappers' => array(
+
+		0 => 'pages',
+
+		1 => 'blogs',
+
+		2 => 'products',
+
+	),
+
+	/**
 	 * PongoCMS :: Notification alert template
 	 */
 	
@@ -83,36 +97,49 @@ return array(
 
 		'Pongo' => array(
 
-			'class' => 'Pongo\Cms\Classes\Pongo',
-			'alias' => 'Pongo\Cms\Support\Facades\Pongo'
+			'class'	=> 'Pongo\Cms\Classes\Pongo',
+			'alias'	=> 'Pongo\Cms\Support\Facades\Pongo',
+			'repos' => array(
+
+				'Pongo\Cms\Support\Repositories\PageRepositoryEloquent',
+
+			),
 
 		),
 
 		'Marker' => array(
 
-			'class' => 'Pongo\Cms\Classes\Marker',
-			'alias' => 'Pongo\Cms\Support\Facades\Marker'
+			'class'	=> 'Pongo\Cms\Classes\Marker',
+			'alias'	=> 'Pongo\Cms\Support\Facades\Marker',
+			'repos' => '',
 
 		),
 
 		'Render' => array(
 
 			'class' => 'Pongo\Cms\Classes\Render',
-			'alias' => 'Pongo\Cms\Support\Facades\Render'
+			'alias' => 'Pongo\Cms\Support\Facades\Render',
+			'repos' => array(
+
+				'Pongo\Cms\Support\Repositories\PageRepositoryEloquent',
+
+			),
 
 		),
 
 		'Theme' => array(
 
 			'class' => 'Pongo\Cms\Classes\Theme',
-			'alias' => 'Pongo\Cms\Support\Facades\Theme'
+			'alias' => 'Pongo\Cms\Support\Facades\Theme',
+			'repos' => '',
 
 		),
 
 		'Tool' => array(
 
 			'class' => 'Pongo\Cms\Classes\Tool',
-			'alias' => 'Pongo\Cms\Support\Facades\Tool'
+			'alias' => 'Pongo\Cms\Support\Facades\Tool',
+			'repos' => '',
 
 		),
 
@@ -121,14 +148,16 @@ return array(
 		'Asset' => array(
 
 			'class' => 'Teepluss\Asset\Asset',
-			'alias' => 'Teepluss\Asset\Facades\Asset'
+			'alias' => 'Teepluss\Asset\Facades\Asset',
+			'repos' => '',
 
 		),
 
 		'Alert' => array(
 
 			'class' => 'Prologue\Alerts\Alert',
-			'alias' => 'Prologue\Alerts\Facades\Alert'
+			'alias' => 'Prologue\Alerts\Facades\Alert',
+			'repos' => '',
 
 		),
 
@@ -146,7 +175,7 @@ return array(
 
 			'method'		=> 'singleton',
 			'interface' 	=> 'Pongo\Cms\Support\Repositories\UserRepositoryInterface',
-			'repository' 	=> 'Pongo\Cms\Support\Repositories\UserRepositoryEloquent'
+			'repository' 	=> 'Pongo\Cms\Support\Repositories\UserRepositoryEloquent',
 
 		),
 
@@ -154,7 +183,23 @@ return array(
 
 			'method'		=> 'singleton',
 			'interface' 	=> 'Pongo\Cms\Support\Repositories\PageRepositoryInterface',
-			'repository' 	=> 'Pongo\Cms\Support\Repositories\PageRepositoryEloquent'
+			'repository' 	=> 'Pongo\Cms\Support\Repositories\PageRepositoryEloquent',
+
+		),
+
+		'element' => array(
+
+			'method'		=> 'singleton',
+			'interface' 	=> 'Pongo\Cms\Support\Repositories\ElementRepositoryInterface',
+			'repository' 	=> 'Pongo\Cms\Support\Repositories\ElementRepositoryEloquent',
+
+		),
+
+		'role' => array(
+
+			'method'		=> 'singleton',
+			'interface' 	=> 'Pongo\Cms\Support\Repositories\RoleRepositoryInterface',
+			'repository' 	=> 'Pongo\Cms\Support\Repositories\RoleRepositoryEloquent',
 
 		),
 

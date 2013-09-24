@@ -1,14 +1,18 @@
 <?php namespace Pongo\Cms\Controllers\Api;
 
-use Pongo\Cms\Models\Page;
-use Pongo\Cms\Models\Element;
+use Pongo\Cms\Support\Repositories\PageRepositoryEloquent as Page;
+use Pongo\Cms\Support\Repositories\ElementRepositoryEloquent as Element;
+use Pongo\Cms\Support\Validators\Page\SettingsValidator as SettingsValidator;
 use Alert, Config, Input, Pongo, Redirect, Session, Str;
 
 class PageController extends ApiController {
 
-	public function __construct()
+	public function __construct(Page $page, Element $element)
 	{
 		parent::__construct();
+
+		$this->page = $page;
+		$this->element = $element;
 	}
 
 	/**
@@ -67,7 +71,7 @@ class PageController extends ApiController {
 				'is_valid' => 0
 			);
 
-			$page = Page::create($page_arr);
+			$page = $this->page->createPage($page_arr);
 
 			$response = array(
 				'status' 	=> 'success',
@@ -137,13 +141,13 @@ class PageController extends ApiController {
 			$pid = $page_arr['id'];
 
 			// Update pages 1st level
-			$page = Page::find($pid);
+			$page = $this->page->getPage($pid);
 			$page->parent_id = $parent;
 			$page->order_id = $key + 1;
-			$page->save();
+			$this->page->savePage($page);
 
 			$page->slug = Pongo::pageTree($page->id, 'slug', '/');
-			$page->save();
+			$this->page->savePage($page);
 
 			// Recursive update
 			if(array_key_exists('children', $page_arr)) {
@@ -174,9 +178,9 @@ class PageController extends ApiController {
 
 			$pid = Input::get('page_id');
 
-			$elements = Page::find($pid)->elements;
+			$elements = $this->page->getPageElements($pid);
 
-			$subpages = Page::where('parent_id', $pid)->first();
+			$subpages = $this->page->getSubPages($pid);
 
 			// Check if NOT force delete page
 
@@ -233,20 +237,15 @@ class PageController extends ApiController {
 						
 						// Detach element from page
 						
-						\DB::table('element_page')
-							->where('page_id', $pid)
-							->where('element_id', $element->id)
-							->delete();
+						$this->page->deletePageElements($element);
 
 						// Count element owner pages
 
-						$n = \DB::table('element_page')
-							->where('element_id', $element->id)
-							->count();
+						$n = $this->element->countElements($element, $element->id);
 
 						// If count = 0, delete element
 
-						if($n == 0) Element::find($element->id)->delete();
+						if($n == 0) $this->element->getElement($element->id)->delete();
 
 					}
 
@@ -280,7 +279,7 @@ class PageController extends ApiController {
 	 */
 	protected function deletePage($page_id)
 	{
-		$page = Page::find($page_id);
+		$page = $this->page->getPage($page_id);
 
 		//DELETE FILES ASSOCIATION
 		// $page->files()->delete();
@@ -309,13 +308,13 @@ class PageController extends ApiController {
 	{
 		$input = Input::all();
 
-		$v = new \Pongo\Cms\Support\Validators\Page\SettingsValidator;
+		$v = new SettingsValidator();
 
 		if($v->passes()) {
 
 			extract($input);
 			
-			$page = Page::find($page_id);
+			$page = $this->page->getPage($page_id);
 
 			// Author can edit the page
 			if(is_array($unauth = Pongo::grantEdit($page->role_level)))
@@ -327,9 +326,7 @@ class PageController extends ApiController {
 
 			// Disable all home pages in lang
 			if($home == 1) {
-				Page::where('lang', LANG)
-					->where('is_home', 1)
-					->update(array('is_home' => 0));
+				$this->page->resetHomePage();
 			}
 
 			$page->name 		= $name;
@@ -337,10 +334,11 @@ class PageController extends ApiController {
 			$page->author_id 	= USERID;
 			$page->access_level = $access_level;			
 			$page->role_level 	= $role_level;
+			$page->wrapper_id 	= $wrapper_id;
 			$page->is_home 		= $home;
 			$page->is_valid 	= $valid;
 
-			$page->save();
+			$this->page->savePage($page);
 
 			$response = array(
 				'status' 	=> 'success',

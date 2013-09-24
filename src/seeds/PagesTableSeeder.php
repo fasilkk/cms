@@ -28,6 +28,7 @@ class PagesTableSeeder extends Seeder {
 				'access_level' => 0,
 				'role_level' => Config::get('cms::system.roles.admin'),
 				'order_id' => Config::get('cms::system.default_order'),
+				'wrapper_id' => 0,
 				'is_home' => 1,
 				'is_valid' => 1
 			),
@@ -47,6 +48,7 @@ class PagesTableSeeder extends Seeder {
 				'access_level' => 0,
 				'role_level' => Config::get('cms::system.roles.admin'),
 				'order_id' => Config::get('cms::system.default_order'),
+				'wrapper_id' => 0,
 				'is_home' => 0,
 				'is_valid' => 1
 			),
@@ -66,6 +68,7 @@ class PagesTableSeeder extends Seeder {
 				'access_level' => 0,
 				'role_level' => Config::get('cms::system.roles.admin'),
 				'order_id' => Config::get('cms::system.default_order'),
+				'wrapper_id' => 0,
 				'is_home' => 0,
 				'is_valid' => 1
 			),
@@ -85,6 +88,7 @@ class PagesTableSeeder extends Seeder {
 				'access_level' => 0,
 				'role_level' => Config::get('cms::system.roles.admin'),
 				'order_id' => Config::get('cms::system.default_order'),
+				'wrapper_id' => 0,
 				'is_home' => 0,
 				'is_valid' => 1
 			),
@@ -106,6 +110,7 @@ class PagesTableSeeder extends Seeder {
 				'access_level' => 0,
 				'role_level' => Config::get('cms::system.roles.admin'),
 				'order_id' => Config::get('cms::system.default_order'),
+				'wrapper_id' => 0,
 				'is_home' => 1,
 				'is_valid' => 1
 			),
@@ -125,6 +130,7 @@ class PagesTableSeeder extends Seeder {
 				'access_level' => 0,
 				'role_level' => Config::get('cms::system.roles.admin'),
 				'order_id' => Config::get('cms::system.default_order'),
+				'wrapper_id' => 0,
 				'is_home' => 0,
 				'is_valid' => 1
 			),
@@ -144,6 +150,7 @@ class PagesTableSeeder extends Seeder {
 				'access_level' => 0,
 				'role_level' => Config::get('cms::system.roles.admin'),
 				'order_id' => Config::get('cms::system.default_order'),
+				'wrapper_id' => 0,
 				'is_home' => 0,
 				'is_valid' => 1
 			),
@@ -163,6 +170,7 @@ class PagesTableSeeder extends Seeder {
 				'access_level' => 0,
 				'role_level' => Config::get('cms::system.roles.admin'),
 				'order_id' => Config::get('cms::system.default_order'),
+				'wrapper_id' => 0,
 				'is_home' => 0,
 				'is_valid' => 1
 			),

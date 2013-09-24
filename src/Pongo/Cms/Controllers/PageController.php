@@ -1,21 +1,24 @@
 <?php namespace Pongo\Cms\Controllers;
 
-use Pongo\Cms\Models\Page;
-use Pongo\Cms\Models\Role;
-use Pongo;
+use Pongo\Cms\Support\Repositories\PageRepositoryEloquent as Page;
+use Pongo\Cms\Support\Repositories\RoleRepositoryEloquent as Role;
+use Config, Render;
 
 class PageController extends BaseController {
 
-	public function __construct()
+	public function __construct(Page $page, Role $role)
 	{
 		parent::__construct();
 
 		$this->beforeFilter('pongo.auth');
+
+		$this->page = $page;
+		$this->role = $role;
 	}
 
 	public function deletedPage()
 	{
-		return Pongo::view('sections.page.deleted');
+		return Render::view('sections.page.deleted');
 	}
 
 	public function layoutPage()
@@ -46,21 +49,22 @@ class PageController extends BaseController {
 	 */
 	public function settingsPage($id)
 	{
-		$page = Page::find($id);
+		$page = $this->page->getPage($id);
 
 		// Available roles
-		$roles = Role::orderBy('level', 'asc')->get();
+		// $roles = Role::orderBy('level', 'asc')->get();
+		$roles = $this->role->orderBy('level', 'asc');
 
 		// Role admin array
 		$admin_roles = \Tool::adminRoles($roles);
 
 		// Count element per page
-		$n_elements = $page->elements->count();
+		$n_elements = $this->page->countPageElements($page);
 
 		// Share page id with all views
 		\View::share('pageid', $id);
 
-		$view = Pongo::view('sections.page.settings');
+		$view = Render::view('sections.page.settings');
 		$view['section']	= 'settings';
 		$view['id'] 		= $id;
 		$view['name'] 		= $page->name;
@@ -72,9 +76,11 @@ class PageController extends BaseController {
 		
 		$view['access_level'] 	= $page->access_level;
 		$view['role_level'] 	= $page->role_level;
+		$view['wrapper_id']		= $page->wrapper_id;
 		
 		$view['roles']			= $roles;
-		$view['admin_roles'] 	= $admin_roles;		
+		$view['admin_roles'] 	= $admin_roles;
+		$view['wrappers']		= Config::get('cms::system.wrappers');
 		
 		$view['n_elements'] 	= $n_elements;
 

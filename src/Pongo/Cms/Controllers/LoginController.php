@@ -16,7 +16,7 @@ class LoginController extends BaseController {
 		// Js page repository
 		// Render::assetAdd('footer', 'login', 'scripts/pages/login.js');
 
-		return Pongo::view('sections.login.login');
+		return Render::view('sections.login.login');
 	}
 
 	public function login()

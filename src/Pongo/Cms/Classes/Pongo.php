@@ -1,46 +1,17 @@
 <?php namespace Pongo\Cms\Classes;
 
-use Pongo\Cms\Models\Page;
-use Alert, Asset, Config, View;
+use Pongo\Cms\Support\Repositories\PageRepositoryEloquent as Page;
 
-class Pongo {	
+use Alert, Asset, Config;
 
-	/**
-	 * Create element list by page_id
-	 * 
-	 * @param  int $page_id    page id
-	 * @return string          element itwm view
-	 */
-	public function createElement($page_id)
-	{
-		$items = Page::find($page_id)->elements;
-
-		$item_view = $this->view('partials.elementitem');
-		$item_view['items'] = $items;
-
-		return $item_view;
-	}
+class Pongo {
 
 	/**
-	 * Create page list recursively
-	 * 
-	 * @param  int $parent_id 	pages's parent id
-	 * @param  string $lang 	available languages
-	 * @return string           page item view
+	 * Pongo constructor
 	 */
-	public function createPage($parent_id, $lang, $pageid = 0)
+	public function __construct(Page $page)
 	{
-		$items = Page::where('parent_id', $parent_id)
-					 ->where('lang', $lang)
-					 ->orderBy('order_id')
-					 ->get();
-
-		$item_view = $this->view('partials.pageitem');
-		$item_view['items'] = $items;
-		$item_view['pageid'] = $pageid;
-		$item_view['parent_id'] = $parent_id;
-
-		return $item_view;
+		$this->page = $page;
 	}
 
 	/**
@@ -136,7 +107,7 @@ class Pongo {
 	 */
 	protected function recursivePageTree($id, $field, $separator, $url, $link, $context)
 	{
-		$page = Page::find($id);
+		$page = $this->page->getPage($id);
 
 		if($field == 'slug') {
 			
@@ -195,27 +166,6 @@ class Pongo {
 		foreach (Alert::all($format) as $alert) {
 			return $alert;
 		}
-	}
-
-	/**
-	 * View::make a Pongo view
-	 * 
-	 * @param  string $name View location
-	 * @param  array  $data Array of data
-	 * @return string       View content
-	 */
-	public function view($name, array $data = array())
-	{		
-		// Point to cms views
-		$view_name = 'cms::' . $name;
-
-		// Set to 'default' view if view not found
-		if ( ! View::exists($view_name)) {
-			$view_name_arr = explode('.', $view_name);
-			$view_name = str_replace(end($view_name_arr), 'default', $view_name);
-		}
-
-		return View::make($view_name, $data);
 	}
 
 	/**

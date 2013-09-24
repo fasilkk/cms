@@ -18,7 +18,7 @@
 
 			<ol class="dl-list">
 
-				{{Pongo::createElement($id)}}
+				{{Render::elementList($id)}}
 
 			</ol>
 

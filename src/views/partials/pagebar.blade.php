@@ -30,7 +30,7 @@
 			
 			<ol class="dd-list">
 
-				{{Pongo::createPage(0, $lang, $pageid)}}
+				{{Render::pageList(0, $lang, $pageid)}}
 
 			</ol>
 

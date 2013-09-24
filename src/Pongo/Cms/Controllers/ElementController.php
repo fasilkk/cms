@@ -1,7 +1,6 @@
 <?php namespace Pongo\Cms\Controllers;
 
-use Pongo\Cms\Models\Page;
-use Input, Redirect, Auth, Pongo;
+use Input, Redirect, Render;
 
 class ElementController extends BaseController {
 
@@ -20,7 +19,7 @@ class ElementController extends BaseController {
 	 */
 	public function editElement($id)
 	{
-		$view = Pongo::view('sections.element.settings');
+		$view = Render::view('sections.element.settings');
 		$view['id'] = $id;
 
 		return $view;

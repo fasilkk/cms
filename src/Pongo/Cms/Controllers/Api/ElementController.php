@@ -1,14 +1,17 @@
 <?php namespace Pongo\Cms\Controllers\Api;
 
-use Pongo\Cms\Models\Element;
-use Pongo\Cms\Models\Page;
+use Pongo\Cms\Support\Repositories\PageRepositoryEloquent as Page;
+use Pongo\Cms\Support\Repositories\ElementRepositoryEloquent as Element;
 use Config, DB, Input, Session, Str;
 
 class ElementController extends ApiController {
 
-	public function __construct()
+	public function __construct(Page $page, Element $element)
 	{
 		parent::__construct();
+
+		$this->page = $page;
+		$this->element = $element;
 	}
 
 	public function createElement()
@@ -31,13 +34,13 @@ class ElementController extends ApiController {
 				'is_valid' => 0
 			);
 
-			$element = new Element($element_arr);
+			$element = $this->element->createElement($element_arr);
 
-			$page = Page::find($pid);
+			$page = $this->page->getPage($pid);
 
-			$count_el = $page->elements()->count();
+			$count_el = $this->page->countPageElements($page);
 
-			$element = $page->elements()->save($element, array('order_id' => Config::get('cms::system.default_order')));
+			$element = $this->page->savePageElement($page, $element, Config::get('cms::system.default_order'));
 
 			$response = array(
 				'status' 	=> 'success',
@@ -70,11 +73,22 @@ class ElementController extends ApiController {
 	{
 		if(Input::has('elements') and Input::has('pid')) {
 
-			$elements = json_decode(Input::get('elements'), true);			
+			$mod_elements = json_decode(Input::get('elements'), true);
+
 			$pid = Input::get('pid');
 
-			// Recursive update
-			$this->updateOrderElement($elements, $pid);
+			$elements = $this->page->getPageElements($pid);
+
+			// Reorder order id
+
+			foreach ($mod_elements as $key => $el) {
+
+				foreach ($elements as $element) {
+
+					if($element->id == $el['id']) 
+						$this->element->updateElementOrder($element, $key + 1);
+				}				
+			}
 
 			$response = array(
 				'status' 	=> 'success',
@@ -91,27 +105,6 @@ class ElementController extends ApiController {
 		}		
 
 		return json_encode($response);
-	}
-
-	/**
-	 * Reorder recursive elements
-	 * 
-	 * @param  array $elements
-	 * @param  int $page_id
-	 * @return void
-	 */
-	protected function updateOrderElement($elements, $page_id)
-	{
-		foreach ($elements as $key => $element_arr) {
-			
-			// Get element ID
-			$eid = $element_arr['id'];
-
-			DB::table('element_page')
-			  ->where('page_id', $page_id)
-			  ->where('element_id', $eid)
-			  ->update(array('order_id' => $key + 1));
-		}
 	}
 
 }

@@ -1,6 +1,6 @@
 <?php namespace Pongo\Cms\Controllers;
 
-use Auth, Alert, Controller, Pongo, Redirect, Response;
+use Auth, Alert, Controller, Redirect, Render, Response;
 
 class BaseController extends Controller {
 
@@ -11,7 +11,7 @@ class BaseController extends Controller {
 
 	public function bootstrap()
 	{
-		$contents = Pongo::view('partials.bootstrap');
+		$contents = Render::view('partials.bootstrap');
 
 		$response = Response::make($contents, 200);
 

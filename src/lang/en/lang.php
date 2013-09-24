@@ -61,9 +61,12 @@ return array(
 		'select' => array(
 
 			'admin' 	=> 'Admin',
+			'blogs'		=> 'Blog posts',
 			'editor' 	=> 'Editor',
 			'guest' 	=> 'Guest',
 			'manager' 	=> 'Manager',
+			'pages'		=> 'Other pages',
+			'products'	=> 'Products',
 			'user' 		=> 'User',
 
 		),
@@ -102,6 +105,7 @@ return array(
 				'create_slug' 	=> 'Slug',
 				'edit_by' 		=> 'Who can edit this?',
 				'force_delete'	=> 'Delete page and detach all elements',
+				'may_contain'	=> 'What can contain?',
 				'name' 			=> 'Page name',
 				'set_hp' 		=> 'Home Page',
 				'slug' 			=> 'Url slug',

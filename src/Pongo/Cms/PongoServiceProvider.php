@@ -53,9 +53,7 @@ class PongoServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{		
-		
 		$app = $this->app;
-
 	}
 
 	/**
@@ -82,7 +80,6 @@ class PongoServiceProvider extends ServiceProvider {
 		foreach ($repositories as $repo) {
 			
 			$app->$repo['method']($repo['interface'], $repo['repository']);
-
 		}
 	}
 
@@ -98,14 +95,26 @@ class PongoServiceProvider extends ServiceProvider {
 		$facades = Config::get('cms::system.facades');
 
 		foreach ($facades as $facade => $path) {
+
+			$repos = array();
+
+			if(is_array($path['repos'])) {
+
+				foreach ($path['repos'] as $key => $repo) {
+
+					$repos[] = new $repo;
+				}
+			}
 			
 			// Share facade name
-			$app[$facade] = $app->share(function($app) use ($path) {
-				return new $path['class'];
+			$app[$facade] = $app->share(function($app) use ($path, $repos) {
+
+				return $this->createInstance($path['class'], $repos);
 			});
 
 			// Alias facade
 			$app->booting(function() use ($facade, $path) {
+
 				$this->aliasLoader->alias($facade, $path['alias']);
 			});
 			
@@ -149,13 +158,28 @@ class PongoServiceProvider extends ServiceProvider {
 		foreach ($commands as $command => $class) {
 			
 			$this->app[$command] = $this->app->share(function($app) use ($class) {
-				return new $class;
+
+				return $this->createInstance($class);
 			});
 
 			$reg_commands[] = $command;
 		}
 
 		$this->commands($reg_commands);
+	}
+
+	/**
+	 * Instantiate a class with dependency repos
+	 * 
+	 * @param  class $class
+	 * @param  array $params
+	 * @return obj
+	 */
+	private function createInstance($class, $params = array())
+	{
+		$reflection_class = new \ReflectionClass($class);
+		
+		return $reflection_class->newInstanceArgs($params);
 	}
 
 }

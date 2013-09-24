@@ -37,6 +37,14 @@
 			<input type="hidden" name="slug_base" id="slug_base" value="{{$slug_base}}">
 		</div>
 		<div class="form-group">
+			<label for="wrapper_id" class="control-label">{{t('label.page.settings.may_contain')}}</label>
+			<select name="wrapper_id" class="form-control" id="wrapper_id">
+				@foreach($wrappers as $id => $wrapper)
+				<option value="{{$id}}"{{selected($id, $wrapper_id)}}>{{t('form.select.' . $wrapper)}}</option>
+				@endforeach
+			</select>
+		</div>
+		<div class="form-group">
 			<label for="role_level" class="control-label">{{t('label.page.settings.edit_by')}}</label>
 			<select name="role_level" class="form-control" id="role_level">
 				@foreach($admin_roles as $role => $level)
